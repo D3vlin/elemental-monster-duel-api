@@ -25,7 +25,7 @@ services:
     dockerfilePath: ./Dockerfile
     dockerContext: .
     autoDeploy: true
-    healthCheckPath: /actuator/health
+    healthCheckPath: /elemental-monster-duel/actuator/health
 
     envVars:
       - key: SPRING_PROFILES_ACTIVE
