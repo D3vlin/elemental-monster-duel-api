@@ -4,6 +4,7 @@ import co.d3vlin.elementalmonsterduel.api.card.service.CardService;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +22,7 @@ public class CardController {
     private final CardService cardService;
 
     @GetMapping
-    public ResponseEntity<Page<CardDTO>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<CardDTO>> findAll(@ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(cardService.findAll(pageable));
     }
 
