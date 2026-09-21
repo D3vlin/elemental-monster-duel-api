@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -x "./mvnw" ]; then
+  MVN_CMD="./mvnw"
+elif command -v mvn >/dev/null 2>&1; then
+  MVN_CMD="mvn"
+else
+  echo "ERROR: Maven is not available. Install Maven or add mvnw to this repository."
+  exit 1
+fi
+
+echo "[pre-push] Verify..."
+$MVN_CMD -B -ntp clean verify || {
+   echo "ERROR: Verify failed. Please correct the errors before pushing."
+   exit 1
+}

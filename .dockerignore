@@ -1,0 +1,13 @@
+target/
+.git/
+.github/
+.idea/
+*.iml
+*.iws
+*.ipr
+*.md
+mvnw
+mvnw.cmd
+.mvn/
+.gitattributes
+.gitignore
