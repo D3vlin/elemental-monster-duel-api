@@ -1,6 +1,7 @@
 package co.d3vlin.elementalmonsterduel.api.card.service;
 
 import co.d3vlin.elementalmonsterduel.api.card.repository.CardRepository;
+import co.d3vlin.elementalmonsterduel.api.card.resolver.CardLoreResolver;
 import co.d3vlin.elementalmonsterduel.api.card.resolver.CardNameResolver;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
 import co.d3vlin.elementalmonsterduel.mapper.CardMapper;
@@ -21,6 +22,7 @@ public class CardService {
     private final CardRepository cardRepository;
     private final CardMapper cardMapper;
     private final CardNameResolver cardNameResolver;
+    private final CardLoreResolver cardLoreResolver;
 
     @Transactional(readOnly = true)
     public Page<CardDTO> findAll(Pageable pageable, String lang) {
@@ -28,6 +30,7 @@ public class CardService {
                 .findAll(pageable)
                 .map(cardMapper::fromEntity);
         cardNameResolver.resolveNames(cards.getContent(), lang);
+        cardLoreResolver.resolveLores(cards.getContent(), lang);
         return cards;
     }
 
@@ -36,7 +39,10 @@ public class CardService {
         Optional<CardDTO> card = cardRepository
                 .findById(id)
                 .map(cardMapper::fromEntity);
-        card.ifPresent(c -> cardNameResolver.resolveNames(List.of(c), lang));
+        card.ifPresent(c -> {
+            cardNameResolver.resolveNames(List.of(c), lang);
+            cardLoreResolver.resolveLores(List.of(c), lang);
+        });
         return card;
     }
 }
