@@ -1,7 +1,7 @@
 package co.d3vlin.elementalmonsterduel.api.card.resolver;
 
 import co.d3vlin.elementalmonsterduel.api.elementTranslation.repository.ElementTranslationRepository;
-import co.d3vlin.elementalmonsterduel.api.locale.repository.LocaleRepository;
+import co.d3vlin.elementalmonsterduel.api.locale.resolver.LanguageResolver;
 import co.d3vlin.elementalmonsterduel.api.powerRankTranslation.repository.PowerRankTranslationRepository;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
 import co.d3vlin.elementalmonsterduel.entity.ElementTranslationEntity;
@@ -13,10 +13,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @RequiredArgsConstructor
@@ -26,15 +24,13 @@ public class CardNameResolver {
             "es", "%s de %s",
             "en", "%s of %s");
 
-    private final LocaleRepository localeRepository;
+    private final LanguageResolver languageResolver;
     private final ElementTranslationRepository elementTranslationRepository;
     private final PowerRankTranslationRepository powerRankTranslationRepository;
 
     @Transactional(readOnly = true)
     public void resolveNames(Collection<CardDTO> cards, String lang) {
-        LocaleEntity locale = localeRepository
-                .findByCode(lang)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unsupported lang: " + lang));
+        LocaleEntity locale = languageResolver.resolve(lang);
 
         Map<Element, String> elementLabels = elementTranslationRepository
                 .findByIdLocaleId(locale.getId())
