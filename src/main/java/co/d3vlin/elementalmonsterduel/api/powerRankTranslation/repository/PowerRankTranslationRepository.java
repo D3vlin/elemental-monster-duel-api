@@ -1,4 +1,4 @@
-package co.d3vlin.elementalmonsterduel.api.card.repository;
+package co.d3vlin.elementalmonsterduel.api.powerRankTranslation.repository;
 
 import co.d3vlin.elementalmonsterduel.entity.PowerRankTranslationEntity;
 import co.d3vlin.elementalmonsterduel.entity.PowerRankTranslationId;

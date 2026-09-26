@@ -1,4 +1,4 @@
-package co.d3vlin.elementalmonsterduel.api.card.repository;
+package co.d3vlin.elementalmonsterduel.api.locale.repository;
 
 import co.d3vlin.elementalmonsterduel.entity.LocaleEntity;
 import java.util.Optional;
