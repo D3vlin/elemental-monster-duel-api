@@ -1,4 +1,4 @@
-package co.d3vlin.elementalmonsterduel.api.cardTranslation.repository;
+package co.d3vlin.elementalmonsterduel.api.card.translation.repository;
 
 import co.d3vlin.elementalmonsterduel.entity.CardTranslationEntity;
 import co.d3vlin.elementalmonsterduel.entity.CardTranslationId;

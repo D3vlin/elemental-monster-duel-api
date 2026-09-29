@@ -1,6 +1,6 @@
 package co.d3vlin.elementalmonsterduel.api.card.resolver;
 
-import co.d3vlin.elementalmonsterduel.api.cardTranslation.repository.CardTranslationRepository;
+import co.d3vlin.elementalmonsterduel.api.card.translation.repository.CardTranslationRepository;
 import co.d3vlin.elementalmonsterduel.api.locale.resolver.LanguageResolver;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
 import co.d3vlin.elementalmonsterduel.entity.CardTranslationEntity;
