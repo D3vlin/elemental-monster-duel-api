@@ -1,6 +1,7 @@
 package co.d3vlin.elementalmonsterduel.api.card.controller;
 
 import co.d3vlin.elementalmonsterduel.api.card.service.CardService;
+import co.d3vlin.elementalmonsterduel.api.exception.ResourceNotFoundException;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +38,6 @@ public class CardController {
         return cardService
                 .findById(id, lang)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Card not found: " + id));
     }
 }
