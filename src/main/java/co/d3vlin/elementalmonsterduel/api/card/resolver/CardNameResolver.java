@@ -1,7 +1,6 @@
 package co.d3vlin.elementalmonsterduel.api.card.resolver;
 
 import co.d3vlin.elementalmonsterduel.api.element.translation.repository.ElementTranslationRepository;
-import co.d3vlin.elementalmonsterduel.api.locale.resolver.LanguageResolver;
 import co.d3vlin.elementalmonsterduel.api.powerrank.translation.repository.PowerRankTranslationRepository;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
 import co.d3vlin.elementalmonsterduel.entity.ElementTranslationEntity;
@@ -24,14 +23,11 @@ public class CardNameResolver {
             "es", "%s de %s",
             "en", "%s of %s");
 
-    private final LanguageResolver languageResolver;
     private final ElementTranslationRepository elementTranslationRepository;
     private final PowerRankTranslationRepository powerRankTranslationRepository;
 
     @Transactional(readOnly = true)
-    public void resolveNames(Collection<CardDTO> cards, String lang) {
-        LocaleEntity locale = languageResolver.resolve(lang);
-
+    public void resolveNames(Collection<CardDTO> cards, LocaleEntity locale) {
         Map<Element, String> elementLabels = elementTranslationRepository
                 .findByIdLocaleId(locale.getId())
                 .stream()
@@ -42,7 +38,7 @@ public class CardNameResolver {
                 .stream()
                 .collect(Collectors.toMap(t -> t.getId().getPowerRank(), PowerRankTranslationEntity::getLabel));
 
-        String nameTemplate = NAME_TEMPLATE_BY_LOCALE.getOrDefault(lang, NAME_TEMPLATE_BY_LOCALE.get("es"));
+        String nameTemplate = NAME_TEMPLATE_BY_LOCALE.getOrDefault(locale.getCode(), NAME_TEMPLATE_BY_LOCALE.get("es"));
 
         for (CardDTO card : cards) {
             card.setName(String.format(

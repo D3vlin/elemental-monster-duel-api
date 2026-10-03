@@ -3,7 +3,9 @@ package co.d3vlin.elementalmonsterduel.api.card.service;
 import co.d3vlin.elementalmonsterduel.api.card.repository.CardRepository;
 import co.d3vlin.elementalmonsterduel.api.card.resolver.CardLoreResolver;
 import co.d3vlin.elementalmonsterduel.api.card.resolver.CardNameResolver;
+import co.d3vlin.elementalmonsterduel.api.locale.resolver.LanguageResolver;
 import co.d3vlin.elementalmonsterduel.dto.CardDTO;
+import co.d3vlin.elementalmonsterduel.entity.LocaleEntity;
 import co.d3vlin.elementalmonsterduel.mapper.CardMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,25 +25,28 @@ public class CardService {
     private final CardMapper cardMapper;
     private final CardNameResolver cardNameResolver;
     private final CardLoreResolver cardLoreResolver;
+    private final LanguageResolver languageResolver;
 
     @Transactional(readOnly = true)
     public Page<CardDTO> findAll(Pageable pageable, String lang) {
+        LocaleEntity locale = languageResolver.resolve(lang);
         Page<CardDTO> cards = cardRepository
                 .findAll(pageable)
                 .map(cardMapper::fromEntity);
-        cardNameResolver.resolveNames(cards.getContent(), lang);
-        cardLoreResolver.resolveLores(cards.getContent(), lang);
+        cardNameResolver.resolveNames(cards.getContent(), locale);
+        cardLoreResolver.resolveLores(cards.getContent(), locale);
         return cards;
     }
 
     @Transactional(readOnly = true)
     public Optional<CardDTO> findById(Long id, String lang) {
+        LocaleEntity locale = languageResolver.resolve(lang);
         Optional<CardDTO> card = cardRepository
                 .findById(id)
                 .map(cardMapper::fromEntity);
         card.ifPresent(c -> {
-            cardNameResolver.resolveNames(List.of(c), lang);
-            cardLoreResolver.resolveLores(List.of(c), lang);
+            cardNameResolver.resolveNames(List.of(c), locale);
+            cardLoreResolver.resolveLores(List.of(c), locale);
         });
         return card;
     }
