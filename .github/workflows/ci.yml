@@ -24,6 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout db
+        uses: actions/checkout@v4
+        with:
+          repository: D3vlin/elemental-monster-duel-db
+          path: ../db
+
       # Consumes elemental-monster-duel-dto / -entity / -mapper from GitHub Packages.
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -40,7 +46,3 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ github.actor }}
           MAVEN_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
-
-# Deploy (CD): Render's native GitHub integration builds the Dockerfile and
-# deploys on every push to `main` (render.yaml: autoDeploy: true, branch: main).
-# No mvn deploy here — this repo produces a runnable app, not a published library.
