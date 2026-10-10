@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -13,17 +12,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
-class CardSchemaConstraintsTest {
+class CardSchemaConstraintsTest extends AbstractCardDbIntegrationTest {
 
     private static final Path DB_DDL_DIR = Path.of("..", "db", "ddl", "tables");
-
-    @Container
-    private static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine");
 
     @BeforeAll
     static void applySchema() throws Exception {
@@ -50,10 +42,6 @@ class CardSchemaConstraintsTest {
              Statement statement = connection.createStatement()) {
             statement.execute("DELETE FROM public.card");
         }
-    }
-
-    private static Connection connect() throws SQLException {
-        return DriverManager.getConnection(POSTGRES.getJdbcUrl(), POSTGRES.getUsername(), POSTGRES.getPassword());
     }
 
     private void insertCard(int atk, int armor, int life, int seal, String element, String powerRank)
